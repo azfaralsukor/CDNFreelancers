@@ -4,8 +4,8 @@ import styles from "assets/jss/material-kit-react/views/landingPage";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 import Footer from "components/Footer/Footer";
-// core components
 import Header from "components/Header/Header";
+import MaterialTable from 'components/MaterialTable/MaterialTable';
 import React from "react";
 
 const useStyles = makeStyles(styles);
@@ -17,14 +17,11 @@ export default function LandingPage(props) {
     <div>
       <Header
         color="transparent"
-        brand="User Management"
+        brand="Complete Developer Network Freelancers"
         {...rest}
       />
       <div className={classNames(classes.main, classes.mainRaised)}>
-        <div>
-          <div className={classes.container}>
-          </div>
-        </div>
+        <MaterialTable />
       </div>
       <Footer />
     </div>
