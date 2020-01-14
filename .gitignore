@@ -107,3 +107,6 @@ dist
 
 # Mac 
 .DS_STORE
+
+# Build files
+build
