@@ -1,62 +1,47 @@
-import React from 'react';
 import MaterialTable from 'material-table';
+import React, { useState } from 'react';
 
-export default function MaterialTableDemo() {
-  const [state, setState] = React.useState({
-    columns: [
-      { title: 'Username', field: 'username' },
-      { title: 'Email Address', field: 'email' },
-      { title: 'Phone Number', field: 'phoneNumber' },
-      { title: 'Skillsets', field: 'skillsets' },
-      { title: 'Hobby', field: 'hobby' },
-    ],
-    data: [
-      { username: 'chris', email: 'chris@gmail.com', phoneNumber: '0198765432', skillsets: 'Web Developer', hobby: 'Reading', },
-      { username: 'topher', email: 'topher@gmail.com', phoneNumber: '0123456789', skillsets: 'Mobile Developer', hobby: 'Cycling' },
-    ],
-  });
+export default function UserList() {
+  const columns = [
+    { title: 'Username', field: 'username' },
+    { title: 'Email Address', field: 'email' },
+    { title: 'Phone Number', field: 'phoneNumber' },
+    { title: 'Skillsets', field: 'skillsets' },
+    { title: 'Hobby', field: 'hobby' },
+  ];
+
+  const [data, setData] = useState([
+    { username: 'chris', email: 'chris@gmail.com', phoneNumber: '0198765432', skillsets: 'Web Developer', hobby: 'Reading', },
+    { username: 'topher', email: 'topher@gmail.com', phoneNumber: '0123456789', skillsets: 'Mobile Developer', hobby: 'Cycling' },
+  ]);
 
   return (
     <MaterialTable
       title="Users"
-      columns={state.columns}
-      data={state.data}
-      style={{padding: 30}}
+      columns={columns}
+      data={data}
+      style={{ padding: 30 }}
       editable={{
         onRowAdd: newData =>
           new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              setState(prevState => {
-                const data = [...prevState.data];
-                data.push(newData);
-                return { ...prevState, data };
-              });
-            }, 600);
+            resolve();
+            setData([...data, newData]);
           }),
         onRowUpdate: (newData, oldData) =>
           new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              if (oldData) {
-                setState(prevState => {
-                  const data = [...prevState.data];
-                  data[data.indexOf(oldData)] = newData;
-                  return { ...prevState, data };
-                });
-              }
-            }, 600);
+            resolve();
+            if (oldData) {
+              setData(prevState => {
+                const data = prevState;
+                data[data.indexOf(oldData)] = newData;
+                return [...data];
+              });
+            }
           }),
         onRowDelete: oldData =>
           new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              setState(prevState => {
-                const data = [...prevState.data];
-                data.splice(data.indexOf(oldData), 1);
-                return { ...prevState, data };
-              });
-            }, 600);
+            resolve();
+            setData(data.filter(i => i !== oldData));
           }),
       }}
     />
