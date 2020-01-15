@@ -1,5 +1,8 @@
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import UserApi from "api/User";
 import MaterialTable from 'material-table';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function UserList() {
   const columns = [
@@ -10,40 +13,110 @@ export default function UserList() {
     { title: 'Hobby', field: 'hobby' },
   ];
 
-  const [data, setData] = useState([
-    { username: 'chris', email: 'chris@gmail.com', phoneNumber: '0198765432', skillsets: 'Web Developer', hobby: 'Reading', },
-    { username: 'topher', email: 'topher@gmail.com', phoneNumber: '0123456789', skillsets: 'Mobile Developer', hobby: 'Cycling' },
-  ]);
+  const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severe, setSevere] = useState(true);
+
+  const getUsers = () => {
+    UserApi.getUsers().then({
+      complete: (res, e) => {
+        if (e)
+          console.log(e);
+        else
+          setData(res.data)
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (!data.length) {
+      getUsers();
+    }
+  }, [data]);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   return (
-    <MaterialTable
-      title="Users"
-      columns={columns}
-      data={data}
-      style={{ padding: 30 }}
-      editable={{
-        onRowAdd: newData =>
-          new Promise(resolve => {
-            resolve();
-            setData([...data, newData]);
-          }),
-        onRowUpdate: (newData, oldData) =>
-          new Promise(resolve => {
-            resolve();
-            if (oldData) {
-              setData(prevState => {
-                const data = prevState;
-                data[data.indexOf(oldData)] = newData;
-                return [...data];
+    <React.Fragment>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <MuiAlert elevation={6} variant="filled" onClose={handleClose} severity={severe ? "error" : "success"}>
+          {message}
+        </MuiAlert>
+      </Snackbar>
+      <MaterialTable
+        title="Users"
+        columns={columns}
+        data={data}
+        style={{ padding: 30 }}
+        editable={{
+          onRowAdd: newData =>
+            new Promise(resolve => {
+              UserApi.create(newData).then({
+                complete: (res, e) => {
+                  if (e) {
+                    setMessage(e.response.data.message);
+                    setSevere(true);
+                  }
+                  else {
+                    setMessage('User created!');
+                    setSevere(false);
+                    setData([...data, res.data]);
+                  }
+                  setOpen(true);
+                  resolve();
+                }
               });
-            }
-          }),
-        onRowDelete: oldData =>
-          new Promise(resolve => {
-            resolve();
-            setData(data.filter(i => i !== oldData));
-          }),
-      }}
-    />
+            }),
+          onRowUpdate: (newData, oldData) =>
+            new Promise(resolve => {
+              if (oldData) {
+                UserApi.update(oldData._id, newData).then({
+                  complete: (res, e) => {
+                    if (e) {
+                      setMessage(e.response.data.message);
+                      setSevere(true);
+                    }
+                    else {
+                      setMessage('User updated!');
+                      setSevere(false);
+                      setData(prevState => {
+                        const data = prevState;
+                        data[data.indexOf(oldData)] = newData;
+                        return [...data];
+                      });
+                    }
+                    setOpen(true);
+                    resolve();
+                  }
+                });
+              }
+            }),
+          onRowDelete: oldData =>
+            new Promise(resolve => {
+              UserApi.delete(oldData._id).then({
+                complete: (res, e) => {
+                  if (e) {
+                    setMessage(e.response.data.message);
+                    setSevere(true);
+                  }
+                  else {
+                    setMessage('User deleted!');
+                    setSevere(false);
+                    setData(data.filter(i => i !== oldData));
+                  }
+                  setOpen(true);
+                  resolve();
+                }
+              });
+            }),
+        }}
+      />
+    </React.Fragment>
   );
 }
