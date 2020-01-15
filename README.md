@@ -1,6 +1,6 @@
 # User Management
 
-A simple user management that can create, update, delete user. A client for viewing data from [server](https://github.com/azfaralsukor/RESTful-Mongo).
+A simple user management that can create, update, delete user. A client for viewing data from [server](https://github.com/azfaralsukor/RESTful-Mongo). Working [demo](https://azfaralsukor.github.com/CDNFreelancers)
 
 ## Getting Started
 
