@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/CDNFreelancers/static/css/main.da005ed0.chunk.css",
-    "main.js": "/CDNFreelancers/static/js/main.a72f2db5.chunk.js",
-    "main.js.map": "/CDNFreelancers/static/js/main.a72f2db5.chunk.js.map",
+    "main.js": "/CDNFreelancers/static/js/main.65a5a1e7.chunk.js",
+    "main.js.map": "/CDNFreelancers/static/js/main.65a5a1e7.chunk.js.map",
     "runtime~main.js": "/CDNFreelancers/static/js/runtime~main.10bdc2c5.js",
     "runtime~main.js.map": "/CDNFreelancers/static/js/runtime~main.10bdc2c5.js.map",
     "static/js/2.1e6a618a.chunk.js": "/CDNFreelancers/static/js/2.1e6a618a.chunk.js",
     "static/js/2.1e6a618a.chunk.js.map": "/CDNFreelancers/static/js/2.1e6a618a.chunk.js.map",
     "index.html": "/CDNFreelancers/index.html",
-    "precache-manifest.7adff9267c52b78a5ac55f87c899d5a6.js": "/CDNFreelancers/precache-manifest.7adff9267c52b78a5ac55f87c899d5a6.js",
+    "precache-manifest.cf53b1017daefe073ce145d4ea55e530.js": "/CDNFreelancers/precache-manifest.cf53b1017daefe073ce145d4ea55e530.js",
     "service-worker.js": "/CDNFreelancers/service-worker.js",
     "static/css/main.da005ed0.chunk.css.map": "/CDNFreelancers/static/css/main.da005ed0.chunk.css.map"
   }

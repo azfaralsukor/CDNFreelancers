@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "45cd98f1884ba1d672932ca4a84a7c5b",
+    "revision": "fd26378ad5f57400096a55f18242d5ac",
     "url": "/CDNFreelancers/index.html"
   },
   {
-    "revision": "107876fbca5e58683e50",
+    "revision": "075e6eb0dc46f7338c24",
     "url": "/CDNFreelancers/static/css/main.da005ed0.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/CDNFreelancers/static/js/2.1e6a618a.chunk.js"
   },
   {
-    "revision": "107876fbca5e58683e50",
-    "url": "/CDNFreelancers/static/js/main.a72f2db5.chunk.js"
+    "revision": "075e6eb0dc46f7338c24",
+    "url": "/CDNFreelancers/static/js/main.65a5a1e7.chunk.js"
   },
   {
     "revision": "ee6549e87d0b31b404ad",
