@@ -42,6 +42,72 @@ export default function UserList() {
     setOpen(false);
   };
 
+  const addData = newData =>
+    new Promise((resolve, reject) => {
+      UserApi.create(newData).then({
+        complete: (res, e) => {
+          if (e) {
+            setMessage(e.response.data.message);
+            setSevere(true);
+            reject();
+          }
+          else {
+            setMessage('User created!');
+            setSevere(false);
+            setData([...data, res.data]);
+            resolve();
+          }
+          setOpen(true);
+        }
+      });
+    });
+
+  const updateData = (newData, oldData) =>
+    new Promise((resolve, reject) => {
+      if (oldData) {
+        UserApi.update(oldData._id, newData).then({
+          complete: (res, e) => {
+            if (e) {
+              setMessage(e.response.data.message);
+              setSevere(true);
+              reject();
+            }
+            else {
+              setMessage('User updated!');
+              setSevere(false);
+              setData(prevState => {
+                const data = prevState;
+                data[data.indexOf(oldData)] = newData;
+                return [...data];
+              });
+              resolve();
+            }
+            setOpen(true);
+          }
+        });
+      }
+    });
+
+  const deleteData = oldData =>
+    new Promise((resolve, reject) => {
+      UserApi.delete(oldData._id).then({
+        complete: (res, e) => {
+          if (e) {
+            setMessage(e.response.data.message);
+            setSevere(true);
+            reject();
+          }
+          else {
+            setMessage('User deleted!');
+            setSevere(false);
+            setData(data.filter(i => i !== oldData));
+            resolve();
+          }
+          setOpen(true);
+        }
+      });
+    });
+
   return (
     <React.Fragment>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -55,69 +121,9 @@ export default function UserList() {
         data={data}
         style={{ padding: 30 }}
         editable={{
-          onRowAdd: newData =>
-            new Promise((resolve, reject) => {
-              UserApi.create(newData).then({
-                complete: (res, e) => {
-                  if (e) {
-                    setMessage(e.response.data.message);
-                    setSevere(true);
-                    reject();
-                  }
-                  else {
-                    setMessage('User created!');
-                    setSevere(false);
-                    setData([...data, res.data]);
-                    resolve();
-                  }
-                  setOpen(true);
-                }
-              });
-            }),
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve, reject) => {
-              if (oldData) {
-                UserApi.update(oldData._id, newData).then({
-                  complete: (res, e) => {
-                    if (e) {
-                      setMessage(e.response.data.message);
-                      setSevere(true);
-                      reject();
-                    }
-                    else {
-                      setMessage('User updated!');
-                      setSevere(false);
-                      setData(prevState => {
-                        const data = prevState;
-                        data[data.indexOf(oldData)] = newData;
-                        return [...data];
-                      });
-                      resolve();
-                    }
-                    setOpen(true);
-                  }
-                });
-              }
-            }),
-          onRowDelete: oldData =>
-            new Promise((resolve, reject) => {
-              UserApi.delete(oldData._id).then({
-                complete: (res, e) => {
-                  if (e) {
-                    setMessage(e.response.data.message);
-                    setSevere(true);
-                    reject();
-                  }
-                  else {
-                    setMessage('User deleted!');
-                    setSevere(false);
-                    setData(data.filter(i => i !== oldData));
-                    resolve();
-                  }
-                  setOpen(true);
-                }
-              });
-            }),
+          onRowAdd: addData,
+          onRowUpdate: updateData,
+          onRowDelete: deleteData
         }}
       />
     </React.Fragment>
