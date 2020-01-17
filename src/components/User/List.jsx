@@ -56,31 +56,33 @@ export default function UserList() {
         style={{ padding: 30 }}
         editable={{
           onRowAdd: newData =>
-            new Promise(resolve => {
+            new Promise((resolve, reject) => {
               UserApi.create(newData).then({
                 complete: (res, e) => {
                   if (e) {
                     setMessage(e.response.data.message);
                     setSevere(true);
+                    reject();
                   }
                   else {
                     setMessage('User created!');
                     setSevere(false);
                     setData([...data, res.data]);
+                    resolve();
                   }
                   setOpen(true);
-                  resolve();
                 }
               });
             }),
           onRowUpdate: (newData, oldData) =>
-            new Promise(resolve => {
+            new Promise((resolve, reject) => {
               if (oldData) {
                 UserApi.update(oldData._id, newData).then({
                   complete: (res, e) => {
                     if (e) {
                       setMessage(e.response.data.message);
                       setSevere(true);
+                      reject();
                     }
                     else {
                       setMessage('User updated!');
@@ -90,28 +92,29 @@ export default function UserList() {
                         data[data.indexOf(oldData)] = newData;
                         return [...data];
                       });
+                      resolve();
                     }
                     setOpen(true);
-                    resolve();
                   }
                 });
               }
             }),
           onRowDelete: oldData =>
-            new Promise(resolve => {
+            new Promise((resolve, reject) => {
               UserApi.delete(oldData._id).then({
                 complete: (res, e) => {
                   if (e) {
                     setMessage(e.response.data.message);
                     setSevere(true);
+                    reject();
                   }
                   else {
                     setMessage('User deleted!');
                     setSevere(false);
                     setData(data.filter(i => i !== oldData));
+                    resolve();
                   }
                   setOpen(true);
-                  resolve();
                 }
               });
             }),
